@@ -48,6 +48,11 @@ public final class MargyProvider extends ContentProvider {
             Diary.note("badges failed to start: " + error);
         }
         try {
+            CommentFilter.start(context);
+        } catch (Throwable error) {
+            Diary.note("comment filter failed to start: " + error);
+        }
+        try {
             Streaks.start(context);
         } catch (Throwable error) {
             Diary.note("streaks failed to start: " + error);

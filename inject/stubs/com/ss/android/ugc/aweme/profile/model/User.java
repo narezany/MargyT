@@ -23,6 +23,11 @@ public class User {
         throw new UnsupportedOperationException("stub");
     }
 
+    /** Stable APK model accessor: non-zero verification state is confirmed. */
+    public boolean isVerified() {
+        throw new UnsupportedOperationException("stub");
+    }
+
     public boolean isPreventDownload() {
         throw new UnsupportedOperationException("stub");
     }

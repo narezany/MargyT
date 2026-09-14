@@ -143,6 +143,13 @@ final class Text {
     static final String DOWNLOAD_ALWAYS = pick(
             "Сохранять можно всё", "Зберігати можна все", "Save anything");
 
+    static final String COMMENT_FILTER = pick("Комментарии", "Коментарі", "Comments");
+    static final String COMMENT_FILTER_ON = pick("Скрывать по имени", "Ховати за ім’ям", "Hide by name");
+    static final String COMMENT_FILTER_NAMES = pick("Имена для скрытия", "Імена для приховування", "Names to hide");
+    static final String COMMENT_FILTER_NAMES_NOTE = pick("По одному имени в строке", "Одне ім’я в рядку", "One name per line");
+    static final String COMMENT_FILTER_EDIT_NOTE = pick("Точные имена; фильтр применяется только к верифицированным аккаунтам.", "Точні імена; фільтр діє лише для верифікованих акаунтів.", "Exact names; the filter applies only to verified accounts.");
+    static final String COMMENT_FILTER_NOTE = pick("Правила загружаются и кэшируются; официальные аккаунты из allowlist не скрываются.", "Правила завантажуються й кешуються; офіційні акаунти з allowlist не приховуються.", "Rules are downloaded and cached; official allowlisted accounts are never hidden.");
+
     static final String FEED = pick("Лента", "Стрічка", "Feed");
 
     static final String HIDE_ADS = pick(

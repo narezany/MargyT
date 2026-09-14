@@ -16,6 +16,7 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -188,6 +189,15 @@ public class SettingsActivity extends Activity {
         LinearLayout feed = card();
         feed.addView(toggleRow("block", Text.HIDE_ADS, Feed.isEnabled(), Feed::setEnabled));
         column.addView(wrap(feed));
+
+        column.addView(section(Text.COMMENT_FILTER));
+        LinearLayout commentFilter = card();
+        commentFilter.addView(toggleRow("visibility_off", Text.COMMENT_FILTER_ON,
+                CommentFilter.isEnabled(), CommentFilter::setEnabled));
+        commentFilter.addView(line());
+        commentFilter.addView(commentFilterNamesRow());
+        column.addView(wrap(commentFilter));
+        column.addView(caption(Text.COMMENT_FILTER_NOTE));
 
         column.addView(section(Text.VIDEO));
         LinearLayout video = card();
@@ -894,6 +904,35 @@ public class SettingsActivity extends Activity {
         } catch (Throwable error) {
             Toast.makeText(this, String.valueOf(error), Toast.LENGTH_LONG).show();
         }
+    }
+
+    private View commentFilterNamesRow() {
+        LinearLayout row = row();
+        row.addView(icon("text_fields"));
+        LinearLayout text = new LinearLayout(this);
+        text.setOrientation(LinearLayout.VERTICAL);
+        text.addView(label(Text.COMMENT_FILTER_NAMES));
+        text.addView(detail(Text.COMMENT_FILTER_NAMES_NOTE));
+        row.addView(text, grow());
+        row.addView(away());
+        row.setOnClickListener(v -> editCommentFilterNames());
+        return sized(row, 64);
+    }
+
+    private void editCommentFilterNames() {
+        final EditText input = new EditText(this);
+        input.setSingleLine(false);
+        input.setMinLines(6);
+        input.setText(CommentFilter.customNamesText());
+        int padding = dp(24);
+        new android.app.AlertDialog.Builder(this)
+                .setTitle(Text.COMMENT_FILTER_NAMES)
+                .setMessage(Text.COMMENT_FILTER_EDIT_NOTE)
+                .setView(input, padding, 0, padding, 0)
+                .setNegativeButton(Text.CANCEL, null)
+                .setPositiveButton(Text.SAVED, (dialog, which) ->
+                        CommentFilter.setCustomNamesText(String.valueOf(input.getText())))
+                .show();
     }
 
     // ------------------------------------------------------------- the links
