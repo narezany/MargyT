@@ -78,8 +78,8 @@ final class Text {
     static final String BADGES_ON = pick("Значки", "Значки", "Badges");
 
     static final String COMMENT_FILTER_ON = pick(
-            "Скрывать комментарии из списка", "Приховувати коментарі зі списку",
-            "Hide listed comments");
+            "Скрывать комментарии поддержавших Tiktok You", "Хаваць каментары, якія падтрымалі Tiktok You",
+            "Hide TikTok You supporters comments");
 
     static final String SAVE_AVATAR = pick(
             "Сохранить аватарку", "Зберегти аватарку", "Save the avatar");
