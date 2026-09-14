@@ -26,4 +26,8 @@ public class User {
     public boolean isPreventDownload() {
         throw new UnsupportedOperationException("stub");
     }
+
+    public int getVerificationType() {
+        throw new UnsupportedOperationException("stub");
+    }
 }

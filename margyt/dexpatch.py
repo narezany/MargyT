@@ -47,6 +47,7 @@ PHOTO_IMAGE = "Lcom/ss/android/ugc/aweme/feed/model/PhotoModeImageUrlModel;"
 ACCOUNT_SERVICE = "Lcom/ss/android/ugc/aweme/IAccountUserService;"
 ACCOUNT = "Lcat/narezany/margyt/Account;"
 COMMENTS = "Lcat/narezany/margyt/Comments;"
+COMMENT_FILTER = "Lcat/narezany/margyt/CommentFilter;"
 COMMENT_IMAGE = "Lcom/ss/android/ugc/aweme/comment/model/CommentImageStruct;"
 COMMENT = "Lcom/ss/android/ugc/aweme/comment/model/Comment;"
 COMMENT_STICKER = "Lcom/ss/android/ugc/aweme/comment/model/CommentStickerStruct;"
@@ -103,6 +104,14 @@ WILD_SOURCES += [
     ("dy1", "(%s)V" % _SHEET, "(%s%s)V" % (_ANY * 4, STICKER_TEMPLATE), STICKERS),
     ("Yt1", "(%s)V" % _INNER, "(%s%s)V" % (_ANY * 3, STICKER_TEMPLATE), STICKERS),
     ("XQ1", "(%s)V" % _CORNER, "(%s%s)V" % (_ANY * 2, STICKER_TEMPLATE), STICKERS),
+]
+
+# Comment pages have moved between several (obfuscated) response classes.  The
+# stable part is their no-argument `getComments()` accessor.  Filtering the
+# returned List is safe even for a non-comment caller: entries which do not
+# expose a comment author are retained unchanged.
+WILD_SOURCES += [
+    ("getComments", "()Ljava/util/List;", "(Ljava/lang/Object;)Ljava/util/List;", COMMENT_FILTER),
 ]
 
 # TikTok's A/B facade. The class name is real; the method names are what the
