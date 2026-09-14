@@ -1,6 +1,8 @@
 package cat.narezany.margyt;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 
 import com.ss.android.ugc.aweme.comment.model.Comment;
 import com.ss.android.ugc.aweme.profile.model.User;
@@ -107,21 +109,25 @@ public final class CommentFilter {
         started = true;
         byte[] cached = Net.read(file(context));
         if (cached != null) apply(cached);
-        final android.os.Handler handler = new android.os.Handler(android.os.Looper.getMainLooper());
-        handler.post(new Runnable() { @Override public void run() {
-            refresh(context.getApplicationContext());
-            handler.postDelayed(this, EVERY);
-        }});
+        final Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(new Runnable() {
+            @Override public void run() {
+                refresh(context.getApplicationContext());
+                handler.postDelayed(this, EVERY);
+            }
+        });
     }
 
     private static void refresh(final Context context) {
-        Net.away("comment filter", new Runnable() { @Override public void run() {
-            byte[] fresh = Net.bytes(SOURCE);
-            if (fresh == null) return;
-            byte[] old = Net.read(file(context));
-            if (old != null && Arrays.equals(old, fresh)) return;
-            if (apply(fresh)) Net.save(file(context), fresh);
-        }});
+        Net.away("comment filter", new Runnable() {
+            @Override public void run() {
+                byte[] fresh = Net.bytes(SOURCE);
+                if (fresh == null) return;
+                byte[] old = Net.read(file(context));
+                if (old != null && Arrays.equals(old, fresh)) return;
+                if (apply(fresh)) Net.save(file(context), fresh);
+            }
+        });
     }
 
     private static boolean apply(byte[] raw) {
@@ -151,6 +157,7 @@ public final class CommentFilter {
         for (Pattern pattern : patterns) if (pattern.matcher(name).matches()) return true;
         return false;
     }
+
     private static Set<String> names(JSONArray source) {
         Set<String> result = new HashSet<String>();
         if (source != null) for (int i = 0; i < source.length(); i++) {
@@ -159,21 +166,35 @@ public final class CommentFilter {
         }
         return result;
     }
+
     private static Set<String> strings(JSONArray source) {
         Set<String> result = new HashSet<String>();
         if (source != null) for (int i = 0; i < source.length(); i++) {
-            String value = source.optString(i, ""); if (value.length() > 0) result.add(value);
+            String value = source.optString(i, "");
+            if (value.length() > 0) result.add(value);
         }
         return result;
     }
+
     private static File file(Context context) {
         return new File(context.getFilesDir(), "margyt/comment-filter.json");
     }
+
     private static final class Rules {
-        static final Rules EMPTY = new Rules(Collections.<String>emptySet(), Collections.<String>emptySet(), Collections.<String>emptySet(), new Pattern[0]);
-        final Set<String> names, allowNames, allowUids; final Pattern[] patterns;
+        static final Rules EMPTY = new Rules(
+                Collections.<String>emptySet(),
+                Collections.<String>emptySet(),
+                Collections.<String>emptySet(),
+                new Pattern[0]);
+
+        final Set<String> names, allowNames, allowUids;
+        final Pattern[] patterns;
+
         Rules(Set<String> names, Set<String> allowNames, Set<String> allowUids, Pattern[] patterns) {
-            this.names = names; this.allowNames = allowNames; this.allowUids = allowUids; this.patterns = patterns;
+            this.names = names;
+            this.allowNames = allowNames;
+            this.allowUids = allowUids;
+            this.patterns = patterns;
         }
     }
 }

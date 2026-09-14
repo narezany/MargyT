@@ -619,6 +619,24 @@ class DexPatchTest(unittest.TestCase):
                       "Lcom/ss/android/ugc/aweme/feed/model/FeedItemList;)"
                       "Ljava/util/List;", text)
 
+    def test_comment_pages_are_filtered_before_tiktok_reads_them(self):
+        text = ("    invoke-virtual {v3}, Lcom/example/CommentPage;->getComments()"
+                "Ljava/util/List;\n")
+        for _label, pattern, target in dexpatch.model_rules():
+            text = pattern.sub(target, text)
+        self.assertIn("Lcat/narezany/margyt/CommentFilter;->getComments("
+                      "Ljava/lang/Object;)Ljava/util/List;", text)
+
+    def test_comment_filter_source_is_defensive(self):
+        path = os.path.join(ROOT, "inject", "java", "cat", "narezany", "margyt",
+                            "CommentFilter.java")
+        with open(path, encoding="utf-8") as source:
+            text = source.read()
+        self.assertIn("https://tiktokyou.yzewe.ru/api/v1/badges", text)
+        self.assertIn("new JSONArray", text)
+        self.assertIn("keeping the last list", text)
+        self.assertIn('"roblox russia".equals(plain)', text)
+
     def test_a_field_read_becomes_a_call_and_a_move(self):
         """allowDownload is a field, so one instruction has to become two."""
         text = ("    iget-object v2, v5, Lcom/ss/android/ugc/aweme/feed/model/"

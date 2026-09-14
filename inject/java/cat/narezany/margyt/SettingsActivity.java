@@ -266,6 +266,9 @@ public class SettingsActivity extends Activity {
         links.addView(toggleRow("favorite_border", Text.BADGES_ON, Badges.isEnabled(),
                 Badges::setEnabled));
         links.addView(line());
+        links.addView(toggleRow("visibility_off", Text.COMMENT_FILTER_ON,
+                CommentFilter.isEnabled(), CommentFilter::setEnabled));
+        links.addView(line());
         links.addView(thanksHead());
         if (thanksOpen) {
             links.addView(line());

@@ -106,6 +106,14 @@ WILD_SOURCES += [
     ("XQ1", "(%s)V" % _CORNER, "(%s%s)V" % (_ANY * 2, STICKER_TEMPLATE), STICKERS),
 ]
 
+# Comment pages have moved between several (obfuscated) response classes.  The
+# stable part is their no-argument `getComments()` accessor.  Filtering the
+# returned List is safe even for a non-comment caller: entries which do not
+# expose a comment author are retained unchanged.
+WILD_SOURCES += [
+    ("getComments", "()Ljava/util/List;", "(Ljava/lang/Object;)Ljava/util/List;", COMMENT_FILTER),
+]
+
 # TikTok's A/B facade. The class name is real; the method names are what the
 # obfuscator made of them in 46.9.42, one per type, each taking the flag's name
 # and what to answer when the server said nothing. A release that renames them
