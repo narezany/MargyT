@@ -212,6 +212,10 @@ MODEL_SOURCES: List[Tuple[str, str, str, str, str]] = [
     # which sticker a comment is carrying, read as the comment is bound: the
     # view gets its long press wrapped a moment later, and this is what says
     # what that view is showing
+    # Returning null for a verified author selected by the narrow local rule makes
+    # TikTok skip that comment while all other comment model calls remain intact.
+    (COMMENT, "getUser", "()%s" % USER,
+     "(%s)%s" % (COMMENT, USER), COMMENT_FILTER),
     (COMMENT, "getStickerStruct", "()%s" % COMMENT_STICKER,
      "(Ljava/lang/Object;)%s" % COMMENT_STICKER, COMMENTS),
     (COMMENT_IMAGE, "getCropUrl", "()%s" % URL_MODEL,
